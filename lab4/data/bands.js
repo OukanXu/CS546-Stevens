@@ -112,6 +112,33 @@ async function remove(id){
     return `${id} has been successfully deleted!`;
 }
 
+async function rename(id,newName){
+    checkId(id);
+
+    checkExist(newName);
+    checkIsStringEmpty(newName);
+
+    const oldBand = await this.get(id);
+    oldName = oldBand.name;
+    if(oldName == newName) throw 'Name does not change';
+
+    const updatedBand = {
+        name: newName
+    };
+
+    const bandCollection = await bands();
+    const updatedInfo = await bandCollection.updateOne(
+        {_id: ObjectId(id)},
+        {$set: updatedBand}
+    );
+
+    if(updatedInfo.modifiedCount === 0){
+        throw 'Could not update band';
+    }
+
+    return await this.get(id);
+}
+
 module.exports = {
     checkExist,
     checkIsStringEmpty,
