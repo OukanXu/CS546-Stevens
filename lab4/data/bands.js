@@ -148,5 +148,6 @@ module.exports = {
     create,
     getAll,
     get,
-    remove
+    remove,
+    rename
 }
